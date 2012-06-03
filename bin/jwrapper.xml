@@ -2,8 +2,10 @@
 	<javahome>C:\myapp\jdk1.6.0_26</javahome>
 	<mainclass>Hello</mainclass>
 	<classpaths>
-<!-- 		<classpath>cp1</classpath> -->
+		<classpath>cp1</classpath>
 		<classpath>cp2</classpath>
 		<classpath>cp3</classpath>
+		<classpath></classpath>
+		<a>haha</a>
 	</classpaths>
 </java>
