@@ -2,7 +2,7 @@
 // 或是经常使用但不常更改的
 // 特定于项目的包含文件
 //
-
+#ifdef WIN32
 #pragma once
 
 #ifndef _WIN32_WINNT		// 允许使用特定于 Windows XP 或更高版本的功能。
@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include <tchar.h>
-
+#endif
 
 
 // TODO: 在此处引用程序需要的其他头文件

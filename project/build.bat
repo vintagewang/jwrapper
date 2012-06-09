@@ -1,0 +1,1 @@
+setx BOOST_HOME D:\opensrc\boost_1_49_0
