@@ -5,9 +5,14 @@
 #include <vector>
 
 typedef std::vector<std::string> ClassPathList;
+typedef std::vector<std::string> OptionList;
+typedef std::map<std::string, std::string> PropertyTable;
+typedef std::map<std::string, std::string> OptionTable;
 
 class JavaConfig
 {
+	// Debug ?
+	bool debug;
 	// Java Home Dir
 	std::string javaHome;
 	// JVM Type
@@ -16,6 +21,10 @@ class JavaConfig
 	std::string mainClass;
 	// Class Path List
 	ClassPathList classPathList;
+	// Java System Property
+	PropertyTable propertyTable;
+	// Java Options -X
+	OptionTable optionTable;
 
 public:
 	JavaConfig();

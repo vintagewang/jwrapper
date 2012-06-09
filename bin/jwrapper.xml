@@ -1,10 +1,33 @@
 <java>
+	<debug>true</debug>
+
 	<javahome>C:\dummy_java_home</javahome>
+
 	<jvmtype>hotspot</jvmtype>
+
 	<mainclass>Hello</mainclass>
+
+	<properties>
+		<java.ext.dirs>${cpd}/../lib</java.ext.dirs>
+		<com.sun.management.jmxremote></com.sun.management.jmxremote>
+		<com.sun.management.jmxremote.port>9999</com.sun.management.jmxremote.port>
+		<com.sun.management.jmxremote.authenticate>false</com.sun.management.jmxremote.authenticate>
+		<com.sun.management.jmxremote.ssl>false</com.sun.management.jmxremote.ssl>
+		<log4j.configuration>${cpd}/log4j.properties</log4j.configuration>
+	</properties>
+
 	<classpaths>
-		<cp>cp1</cp>
-		<cp>cp2</cp>
-		<cp>cp3</cp>
+		<path>cp1</path>
+		<path>cp2</path>
+		<jars>cp3</jars>
 	</classpaths>
+
+	<options>
+		<-Xms512m></-Xms512m>
+		<-Xmx512m></-Xmx512m>
+		<-XX:NewSize>256M</-XX:NewSize>
+		<-XX:MaxNewSize>256M</-XX:MaxNewSize>
+		<-XX:PermSize>128M</-XX:PermSize>
+		<-XX:MaxPermSize>128M</-XX:MaxPermSize>
+	</options>
 </java>
