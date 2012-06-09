@@ -16,6 +16,11 @@ namespace JWUtil
 	 * 获取当前程序可执行程序的全路径，含文件名
 	 */
 	std::string getCurrentExeFilePath();
+
+	/**
+	 * 设置环境变量
+	 */
+	void setEnv(const char* name, const char* value);
 };
 
 #endif // end of _JW_JWUTIL_H__

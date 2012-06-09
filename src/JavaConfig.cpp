@@ -88,6 +88,9 @@ bool JavaConfig::load()
 		return false;
 	}
 
+
+	JWUtil::setEnv("JAVA_HOME", this->javaHome.c_str());
+
 	return true;
 }
 
@@ -102,10 +105,38 @@ void JavaConfig::printAll()
 			printf("classPathList %2d = [%s]\n", i, this->classPathList[i].c_str());
 		}
 	}
-
 }
 
 std::string JavaConfig::getConfigFile()
 {
 	return JWUtil::getCurrentExeFilePath() + ".xml";
+}
+
+bool JavaConfig::expandMacro(std::string& value)
+{
+	bool result = true;
+	for(std::size_t start = 0; result
+	    && std::string::npos != (start = value.find("${", start));) {
+		start += 2;
+		std::size_t end = value.find("}", start);
+		result = end != std::string::npos;
+		if(result) {
+			std::string var = value.substr(start, end - start);
+
+			// 可执行程序所在目录
+			if(var == "cpd") {
+
+			}
+			// 当前工作目录
+			else if(var == "cwd") {
+
+			}
+			// 环境变量
+			else {
+
+			}
+		}
+	}
+
+	return result;
 }

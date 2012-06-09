@@ -37,6 +37,7 @@ public:
 
 private:
 	static std::string getConfigFile();
+	static bool expandMacro(std::string& value);
 };
 
 #endif // end of _JW_JAVA_CONFIG_H__

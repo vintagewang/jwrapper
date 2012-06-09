@@ -2,6 +2,8 @@
 #include <direct.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
+
 #ifdef WIN32
 #include <Windows.h>
 #endif
@@ -65,5 +67,20 @@ namespace JWUtil
 #endif
 
 		return result;
+	}
+
+	void setEnv(const char* name, const char* value)
+	{
+		assert(NULL != name);
+		assert(NULL != value);
+
+#ifdef WIN32
+		std::string envFull = name;
+		envFull += "=";
+		envFull += value;
+		_putenv(envFull.c_str());
+#else
+		setenv(name, value, 1);
+#endif
 	}
 }
