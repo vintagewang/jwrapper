@@ -8,8 +8,16 @@ typedef std::vector<std::string> ClassPathList;
 
 class JavaConfig
 {
-public:
+	// Java Home Dir
+	std::string javaHome;
+	// JVM Type
+	std::string jvmType;
+	// Main Class
+	std::string mainClass;
+	// Class Path List
+	ClassPathList classPathList;
 
+public:
 	JavaConfig();
 	~JavaConfig();
 	static JavaConfig* getInstance();
@@ -20,11 +28,6 @@ public:
 
 private:
 	static std::string getConfigFile();
-
-private:
-	std::string javaHome;
-	std::string mainClass;
-	ClassPathList classPathList;
 };
 
 #endif // end of _JW_JAVA_CONFIG_H__

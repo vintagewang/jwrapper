@@ -1,5 +1,6 @@
 <java>
-	<javahome>C:\myapp\jdk1.6.0_26</javahome>
+	<javahome>C:\dummy_java_home</javahome>
+	<jvmtype>hotspot</jvmtype>
 	<mainclass>Hello</mainclass>
 	<classpaths>
 		<cp>cp1</cp>

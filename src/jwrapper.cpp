@@ -1,4 +1,8 @@
 #include "JavaConfig.h"
+#include "JWUtil.h"
+#include <stdio.h>
+#include <stdlib.h>
+
 
 int main(int argc, char** argv)
 {
@@ -6,5 +10,7 @@ int main(int argc, char** argv)
 	if(result) {
 		JavaConfig::getInstance()->printAll();
 	}
+
+	system("PAUSE");
 	return 0;
 }
