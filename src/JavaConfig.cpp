@@ -26,7 +26,7 @@ JavaConfig* JavaConfig::getInstance()
 bool JavaConfig::load()
 {
 	ptree pt;
-	read_xml("jwrapper.xml", pt);
+	read_xml(getConfigFile().c_str(), pt);
 	this->javaHome = pt.get<string>("java.javahome");
 	this->mainClass = pt.get<string>("java.mainclass");
 
@@ -46,6 +46,8 @@ void JavaConfig::printAll()
 	for(size_t i = 0; i < this->classPathList.size(); i++) {
 		printf("CLASS PATH %2d = [%s]\n", i, this->classPathList[i].c_str());
 	}
+
+	printf("EXE = [%s]\n", this->getConfigFile().c_str());
 }
 
 std::string JavaConfig::getConfigFile()
