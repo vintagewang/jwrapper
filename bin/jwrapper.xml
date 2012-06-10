@@ -1,9 +1,9 @@
 <java>
 	<debug>true</debug>
 
-	<javahome>C:\dummy_java_home</javahome>
+	<javahome>${JAVA_HOME}</javahome>
 
-	<jvmtype>hotspot</jvmtype>
+	<jvmtype>client</jvmtype>
 
 	<mainclass>Hello</mainclass>
 

@@ -15,6 +15,7 @@
  */
 #include "JavaConfig.h"
 #include "JWUtil.h"
+#include "JavaLauncher.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -24,8 +25,9 @@ int main(int argc, char** argv)
 	bool result = JavaConfig::getInstance()->load();
 	if(result) {
 		JavaConfig::getInstance()->printAll();
+
+		return JavaLauncher::getInstance()->launchJavaApp(argc, argv);
 	}
 
-	system("PAUSE");
-	return 0;
+	return -1;
 }

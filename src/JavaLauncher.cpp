@@ -47,7 +47,7 @@ int JavaLauncher::launchJavaApp(int argc, char** argv)
 
 	// 3, 获取创建JVM的函数指针
 	typedef jint(JNICALL * CreateJVMFun)(JavaVM**, void**, void*);
-	CreateJVMFun createJVMFun = (CreateJVMFun)jvmDll.getFunction("JNI_CreateJavaJVM");
+	CreateJVMFun createJVMFun = (CreateJVMFun)jvmDll.getFunction("JNI_CreateJavaVM");
 	if(NULL == createJVMFun) {
 		fprintf(stderr, "Load JVM error %s\n", jvmPath.c_str());
 		return -1;
