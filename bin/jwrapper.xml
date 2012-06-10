@@ -19,6 +19,7 @@
 	<classpaths>
 		<path>cp1</path>
 		<path>cp2</path>
+		<path>${cwd}/../lib</path>
 		<jars>cp3</jars>
 	</classpaths>
 
