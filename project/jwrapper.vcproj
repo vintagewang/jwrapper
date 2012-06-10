@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(BOOST_HOME)&quot;;&quot;$(SolutionDir)..\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(JAVA_HOME)\include\win32&quot;;&quot;$(JAVA_HOME)\include&quot;;&quot;$(BOOST_HOME)&quot;;&quot;$(SolutionDir)..\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -184,6 +184,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\JavaLauncher.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\jwrapper.cpp"
 				>
 			</File>
@@ -203,6 +207,10 @@
 			</File>
 			<File
 				RelativePath="..\src\JavaConfig.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\JavaLauncher.h"
 				>
 			</File>
 			<File
