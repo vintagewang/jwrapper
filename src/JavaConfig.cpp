@@ -15,6 +15,7 @@
  */
 #include "JavaConfig.h"
 #include "JWUtil.h"
+#include "JavaLauncher.h"
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
@@ -121,6 +122,13 @@ bool JavaConfig::load()
 		fprintf(stderr, "Unexpected exception.\n");
 		return false;
 	}
+
+	// 加载LIBPATH
+	JWUtil::addLibPath(".");
+	JWUtil::addLibPath(JWUtil::getCurrentExeFileDir().c_str());
+	JWUtil::addLibPath((this->javaHome + "/jre/bin").c_str());
+
+
 
 	return true;
 }
@@ -275,4 +283,83 @@ std::string JavaConfig::getJVMDllPath()
 #endif
 
 	return result;
+}
+
+std::string JavaConfig::getMainClass()
+{
+	std::string retString = this->mainClass;
+	std::replace(retString.begin(), retString.end(), '.', '/');
+	return retString;
+}
+
+void JavaConfig::buildJavaVMInitArgs(JavaVMInitArgs& args)
+{
+	int index = 0;
+
+	OptionTable table;
+	this->buildNewOptionTable(table);
+
+	// 为JavaVMInitArgs分配内存
+	args.nOptions = static_cast<jint>(table.size() + 2);
+	args.options = new JavaVMOption[args.nOptions];
+
+	// 设置JavaVMInitArgs
+	args.version = JNI_VERSION_1_2;
+	args.ignoreUnrecognized = JNI_FALSE;
+
+	printLog("JavaVMInitArgs:");
+	printLog("	version 0x%08x", args.version);
+	printLog("	ignoreUnrecognized is %s", args.ignoreUnrecognized ? "JNI_TRUE" : "JNI_FALSE");
+	printLog("	nOptions is %d", args.nOptions);
+
+	OptionTable::const_iterator it = table.begin();
+	for(index = 0; it != table.end(); it++, index++) {
+		std::string optString = it->first + (it->second.length() > 0 ? "=" + it->second : "");
+
+		char *key = new char[optString.length() + 1];
+		memset(key, 0, optString.length() + 1);
+		sprintf(key, "%s", optString.c_str());
+		args.options[index].optionString = key;
+		args.options[index].extraInfo = NULL;
+		printLog("\toption[%2d] = '%s'", index, args.options[index].optionString);
+	}
+
+	{
+		char *key = new char[32];
+		memset(key, 0, 32);
+		strcpy(key, "exit");
+		args.options[index].optionString = key;
+		args.options[index].extraInfo = (void*) JavaLauncher::exitHandler;
+		printLog("\toption[%2d] = '%s'(JNI Invocation API JVM exit hook)", index, args.options[index].optionString);
+	}
+
+	{
+		index++;
+		char *key = new char[32];
+		memset(key, 0, 32);
+		strcpy(key, "abort");
+		args.options[index].optionString = key;
+		args.options[index].extraInfo = (void*) JavaLauncher::abortHandler;
+		printLog("\toption[%2d] = '%s'(JNI Invocation API JVM abort hook)", index, args.options[index].optionString);
+	}
+
+}
+
+void JavaConfig::buildNewOptionTable(OptionTable& table)
+{
+	table = this->optionTable;
+
+	OptionTable::iterator it = this->propertyTable.begin();
+	for(; it != this->propertyTable.end(); it++) {
+		this->optionTable["-D" + it->first] = it->second;
+	}
+
+	// -Djava.class.path
+	std::string javaClassPath = table["-Djava.class.path"];
+	for(std::size_t i = 0; i < this->classPathList.size(); i++) {
+		javaClassPath += this->classPathList[i];
+		javaClassPath += PATH_SEPARATOR;
+	}
+
+	table["-Djava.class.path"] = javaClassPath;
 }

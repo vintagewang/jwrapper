@@ -20,12 +20,20 @@
 
 class JavaLauncher
 {
+	int exitCode;
+	int abortCode;
+
+	bool exited;
+	bool aborted;
+
 public:
 	JavaLauncher();
 	~JavaLauncher();
 	static JavaLauncher* getInstance();
 
 	int launchJavaApp(int argc, char** argv);
+	void setExitCode(int code);
+	void setAbortCode(int code);
 	static void exitHandler(int code);
 	static void abortHandler(int code);
 
@@ -33,6 +41,7 @@ private:
 	static jobject newPlatformString(JNIEnv *env, char *s);
 	static jobject getPlatformEncoding(JNIEnv *env);
 	static jboolean isEncodingSupported(JNIEnv *env, jobject enc);
+	static jobjectArray newPlatformStringArray(JNIEnv *env, char **strv, int strc);
 	static void reportErrorMessage(JNIEnv* env, const char* errorMsg = NULL);
 };
 

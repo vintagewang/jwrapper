@@ -26,11 +26,6 @@
 #include <unistd.h>
 #endif
 
-#ifdef WIN32
-#define FILE_SEPARATOR "\\"
-#else
-#define FILE_SEPARATOR "/"
-#endif
 
 namespace JWUtil
 {
@@ -116,5 +111,41 @@ namespace JWUtil
 				break;
 			}
 		}
+	}
+
+	void addLibPath(const char* path)
+	{
+		assert(NULL != path);
+
+#if defined(WIN32)
+		const char* libPath = "PATH";
+#elif defined(AIX)
+		const char* libPath = "LIBPATH";
+#elif defined(HPUX)
+		const char* libPath = "SHLIB_PATH";
+#else
+		const char* libPath = "LD_LIBRARY_PATH";
+#endif
+		const char* envLibPath = getenv(libPath);
+		std::string pathValue = path;
+		pathValue += PATH_SEPARATOR;
+		pathValue += (envLibPath != NULL) ? envLibPath : "";
+		setEnv(libPath, pathValue.c_str());
+	}
+
+	std::string getLibPath()
+	{
+#if defined(WIN32)
+		const char* libPath = "PATH";
+#elif defined(AIX)
+		const char* libPath = "LIBPATH";
+#elif defined(HPUX)
+		const char* libPath = "SHLIB_PATH";
+#else
+		const char* libPath = "LD_LIBRARY_PATH";
+#endif
+		const char* envLibPath = getenv(libPath);
+
+		return (envLibPath != NULL) ? envLibPath : "";
 	}
 }

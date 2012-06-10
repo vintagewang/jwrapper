@@ -17,6 +17,14 @@
 #define _JW_JWUTIL_H__
 #include <string>
 
+#ifdef WIN32
+#define FILE_SEPARATOR "\\"
+#define PATH_SEPARATOR ";"
+#else
+#define FILE_SEPARATOR "/"
+#define PATH_SEPARATOR ":"
+#endif
+
 namespace JWUtil
 {
 	/**
@@ -43,6 +51,10 @@ namespace JWUtil
 	 * ×Ö·û´®Ìæ»»
 	 */
 	void replaceAll(std::string& source, const char* oldString, const char* newString);
+
+	void addLibPath(const char* path);
+
+	std::string getLibPath();
 };
 
 #endif // end of _JW_JWUTIL_H__

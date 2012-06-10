@@ -18,6 +18,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <jni.h>
 
 typedef std::vector<std::string> ClassPathList;
 typedef std::vector<std::string> OptionList;
@@ -54,7 +55,12 @@ public:
 
 	std::string getJVMDllPath();
 
+	std::string getMainClass();
+
+	void buildJavaVMInitArgs(JavaVMInitArgs& args);
+
 private:
+	void buildNewOptionTable(OptionTable& table);
 	static std::string getConfigFile();
 	static bool expandMacro(std::string& value);
 };
