@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 #include "JavaLauncher.h"
+#include "JavaConfig.h"
+#include "DLL.h"
 
 #define NULL_CHECK0(e) if ((e) == 0) return 0
 #define NULL_CHECK(e) if ((e) == 0) return
@@ -32,9 +34,27 @@ JavaLauncher* JavaLauncher::getInstance()
 	return singleton;
 }
 
-bool JavaLauncher::launchJavaApp(int argc, char** argv)
+int JavaLauncher::launchJavaApp(int argc, char** argv)
 {
-	return false;
+	// 1, 获取JVM动态库全路径
+	std::string jvmPath = JavaConfig::getInstance()->getJVMDllPath();
+
+	// 2, 定义DLL对象，并加载JVM动态库
+	DLL jvmDll(jvmPath.c_str());
+
+	// 3, 获取创建JVM的函数指针
+	typedef jint(JNICALL *CreateJVMFun)(JavaVM**, void**, void*);
+	CreateJVMFun createJVMFun = (CreateJVMFun)jvmDll.getFunction("JNI_CreateJavaJVM");
+	if(NULL == createJVMFun){
+		fprintf(stderr, "Load JVM error %s\n", jvmPath.c_str());
+		return -1;
+	}
+	JavaConfig::getInstance()->printLog("Get JVM function OK.");
+
+	// 4, 创建JVM
+	JavaVMInitArgs jvmArgs;
+
+	return 0;
 }
 
 void JavaLauncher::exitHandler(int code)
@@ -67,7 +87,7 @@ jobject JavaLauncher::newPlatformString(JNIEnv *env, char *s)
 			if(isEncodingSupported(env, enc) == JNI_TRUE) {
 				NULL_CHECK0(cls = env->FindClass("java/lang/String"));
 				NULL_CHECK0(mid = env->GetMethodID(cls, "<init>",
-				                                      "([BLjava/lang/String;)V"));
+				                                   "([BLjava/lang/String;)V"));
 				str = env->NewObject(cls, mid, ary, enc);
 			} else {
 				/*If the encoding specified in sun.jnu.encoding is not
@@ -78,7 +98,7 @@ jobject JavaLauncher::newPlatformString(JNIEnv *env, char *s)
 				*/
 				NULL_CHECK0(cls = env->FindClass("java/lang/String"));
 				NULL_CHECK0(mid = env->GetMethodID(cls, "<init>",
-				                                      "([B)V"));
+				                                   "([B)V"));
 				str = env->NewObject(cls, mid, ary);
 			}
 			env->DeleteLocalRef(ary);
@@ -99,10 +119,10 @@ jobject JavaLauncher::getPlatformEncoding(JNIEnv *env)
 			jmethodID mid;
 			NULL_CHECK0(cls = env->FindClass("java/lang/System"));
 			NULL_CHECK0(mid = env->GetStaticMethodID(cls,
-			                      "getProperty",
-			                      "(Ljava/lang/String;)Ljava/lang/String;"));
+			                  "getProperty",
+			                  "(Ljava/lang/String;)Ljava/lang/String;"));
 			platformEncoding = env->CallStaticObjectMethod(
-			                    cls, mid, propname);
+			                       cls, mid, propname);
 		}
 	}
 	return platformEncoding;
@@ -114,7 +134,7 @@ jboolean JavaLauncher::isEncodingSupported(JNIEnv *env, jobject enc)
 	jmethodID mid;
 	NULL_CHECK0(cls = env->FindClass("java/nio/charset/Charset"));
 	NULL_CHECK0(mid = env->GetStaticMethodID(
-	                     cls,
+	                      cls,
 	                      "isSupported",
 	                      "(Ljava/lang/String;)Z"));
 	return env->CallStaticBooleanMethod(cls, mid, enc);

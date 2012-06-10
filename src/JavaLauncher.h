@@ -25,7 +25,7 @@ public:
 	~JavaLauncher();
 	static JavaLauncher* getInstance();
 
-	bool launchJavaApp(int argc, char** argv);
+	int launchJavaApp(int argc, char** argv);
 	static void exitHandler(int code);
 	static void abortHandler(int code);
 

@@ -50,6 +50,10 @@ public:
 
 	void printAll();
 
+	void printLog(const char* fmt, ...);
+
+	std::string getJVMDllPath();
+
 private:
 	static std::string getConfigFile();
 	static bool expandMacro(std::string& value);

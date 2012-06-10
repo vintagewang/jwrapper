@@ -18,6 +18,8 @@
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
+#include <assert.h>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/typeof/std/utility.hpp>
@@ -59,6 +61,11 @@ bool JavaConfig::load()
 			fprintf(stderr, "You must set JAVA_HOME environment variable or set it in config file.\n");
 			return false;
 		}
+
+		if(!this->expandMacro(this->javaHome)) {
+			return false;
+		}
+
 		JWUtil::setEnv("JAVA_HOME", this->javaHome.c_str());
 
 		// JVM Type
@@ -183,6 +190,89 @@ bool JavaConfig::expandMacro(std::string& value)
 			}
 		}
 	}
+
+	return result;
+}
+
+void JavaConfig::printLog(const char* fmt, ...)
+{
+	if(this->debug) {
+		const static int BUFFER_SIZE = 1024 * 2;
+		char *buf = new char[BUFFER_SIZE + 1];
+		va_list args;
+
+		va_start(args, fmt);
+		vsnprintf(buf, BUFFER_SIZE, fmt, args);
+		va_end(args);
+
+		printf("%s\n", buf);
+
+		delete[] buf;
+	}
+}
+
+std::string JavaConfig::getJVMDllPath()
+{
+	std::string result;
+#if defined(WIN32)
+	result += this->javaHome;
+	result += "/jre/bin/";
+	result += this->jvmType;
+	result += "/jvm.dll";
+#elif defined(SOLARIS_X86)
+#if defined(ARCH64)
+	result += this->javaHome;
+	result += "/jre/lib/amd64";
+	result += this->jvmType;
+	result += "/libjvm.so";
+#else
+	result += this->javaHome;
+	result += "/jre/lib/i386";
+	result += this->jvmType;
+	result += "/libjvm.so";
+#endif
+#elif defined(SOLARIS_X86)
+#if defined(ARCH64)
+	result += this->javaHome;
+	result += "/jre/lib/sparcv9";
+	result += this->jvmType;
+	result += "/libjvm.so";
+#else
+	result += this->javaHome;
+	result += "/jre/lib/sparc";
+	result += this->jvmType;
+	result += "/libjvm.so";
+#endif
+#elif defined(HPUX)
+#if defined(ARCH64)
+	result += this->javaHome;
+	result += "/jre/lib/IA64W";
+	result += this->jvmType;
+	result += "/libjvm.so";
+#else
+	result += this->javaHome;
+	result += "/jre/lib/IA64N";
+	result += this->jvmType;
+	result += "/libjvm.so";
+#endif
+#elif defined(LINUX)
+#if defined(ARCH64)
+	result += this->javaHome;
+	result += "/jre/lib/amd64";
+	result += this->jvmType;
+	result += "/libjvm.so";
+#else
+	result += this->javaHome;
+	result += "/jre/lib/i386";
+	result += this->jvmType;
+	result += "/libjvm.so";
+#endif
+#elif defined(AIX)
+	result += this->javaHome;
+	result += "/jre/bin/classic";
+	result += this->jvmType;
+	result += "/libjvm.a";
+#endif
 
 	return result;
 }
