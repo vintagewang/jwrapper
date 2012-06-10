@@ -59,6 +59,7 @@ bool JavaConfig::load()
 			fprintf(stderr, "You must set JAVA_HOME environment variable or set it in config file.\n");
 			return false;
 		}
+		JWUtil::setEnv("JAVA_HOME", this->javaHome.c_str());
 
 		// JVM Type
 		this->jvmType = pt.get<string>("java.jvmtype");
@@ -113,9 +114,6 @@ bool JavaConfig::load()
 		fprintf(stderr, "Unexpected exception.\n");
 		return false;
 	}
-
-
-	JWUtil::setEnv("JAVA_HOME", this->javaHome.c_str());
 
 	return true;
 }

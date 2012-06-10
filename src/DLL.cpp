@@ -20,7 +20,7 @@ DLL::DLL(const char* file) : dll(NULL)
 {
 	assert(NULL != file);
 
-#ifdef
+#ifdef WIN32
 	this->dll = ::LoadLibraryA(file);
 #else
 	this->dll = dlopen(file, RTLD_NOW + RTLD_GLOBAL);
@@ -33,7 +33,7 @@ DLL::DLL(const char* file) : dll(NULL)
 DLL::~DLL()
 {
 	if(NULL != this->dll) {
-#ifdef
+#ifdef WIN32
 		::FreeLibrary(this->dll);
 #else
 		::dlclose(this->dll);
