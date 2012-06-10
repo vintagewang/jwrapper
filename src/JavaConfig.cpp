@@ -17,6 +17,7 @@
 #include "JWUtil.h"
 #include <string>
 #include <stdio.h>
+#include <stdlib.h>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/typeof/std/utility.hpp>
@@ -71,7 +72,12 @@ bool JavaConfig::load()
 			for(BOOST_AUTO(pos, child.begin());
 			    pos != child.end();
 			    ++pos) {
-				this->propertyTable[pos->first.data()] = pos->second.data();
+				std::string value = pos->second.data();
+				if(this->expandMacro(value)) {
+					this->propertyTable[pos->first.data()] = value;
+				} else {
+					return false;
+				}
 			}
 		}
 
@@ -81,7 +87,12 @@ bool JavaConfig::load()
 			for(BOOST_AUTO(pos, child.begin());
 			    pos != child.end();
 			    ++pos) {
-				this->classPathList.push_back(pos->second.data());
+				std::string value = pos->second.data();
+				if(this->expandMacro(value)) {
+					this->classPathList.push_back(value);
+				} else {
+					return false;
+				}
 			}
 		}
 
@@ -112,12 +123,28 @@ bool JavaConfig::load()
 void JavaConfig::printAll()
 {
 	if(this->debug) {
-		printf("javaHome = [%s]\n", this->javaHome.c_str());
-		printf("jvmType = [%s]\n", this->jvmType.c_str());
-		printf("mainClass = [%s]\n", this->mainClass.c_str());
-
-		for(size_t i = 0; i < this->classPathList.size(); i++) {
-			printf("classPathList %2d = [%s]\n", i, this->classPathList[i].c_str());
+		printf("javahome = [%s]\n", this->javaHome.c_str());
+		printf("jvmtype = [%s]\n", this->jvmType.c_str());
+		printf("mainclass = [%s]\n", this->mainClass.c_str());
+		{
+			printf("properties:\n");
+			PropertyTable::iterator it = this->propertyTable.begin();
+			for(; it != this->propertyTable.end(); it++) {
+				printf("\t %s = [%s]\n", it->first.c_str(), it->second.c_str());
+			}
+		}
+		{
+			printf("classpaths:\n");
+			for(size_t i = 0; i < this->classPathList.size(); i++) {
+				printf("\t %2d = [%s]\n", i, this->classPathList[i].c_str());
+			}
+		}
+		{
+			printf("options:\n");
+			OptionTable::iterator it = this->optionTable.begin();
+			for(; it != this->optionTable.end(); it++) {
+				printf("\t %s = [%s]\n", it->first.c_str(), it->second.c_str());
+			}
 		}
 	}
 }
@@ -140,15 +167,21 @@ bool JavaConfig::expandMacro(std::string& value)
 
 			// 可执行程序所在目录
 			if(var == "cpd") {
-
+				value.replace(start - 2, end - start + 3, JWUtil::getCurrentExeFileDir());
 			}
 			// 当前工作目录
 			else if(var == "cwd") {
-
+				value.replace(start - 2, end - start + 3, JWUtil::getWorkingDir());
 			}
 			// 环境变量
 			else {
-
+				const char* env = getenv(var.c_str());
+				if(env != NULL) {
+					value.replace(start - 2, end - start + 3, env);
+				} else {
+					fprintf(stderr, "The environment variable <%s> is not exist\n", var.c_str());
+					result = false;
+				}
 			}
 		}
 	}

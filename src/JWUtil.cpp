@@ -102,4 +102,19 @@ namespace JWUtil
 		setenv(name, value, 1);
 #endif
 	}
+
+	void replaceAll(std::string& source, const char* oldString, const char* newString)
+	{
+		assert(NULL != oldString);
+		assert(NULL != newString);
+
+		while(true) {
+			std::string::size_type pos = 0;
+			if((pos = source.find(oldString)) != std::string::npos) {
+				source.replace(pos, strlen(oldString), newString);
+			} else {
+				break;
+			}
+		}
+	}
 }
