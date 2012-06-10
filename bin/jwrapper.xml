@@ -1,5 +1,5 @@
 <java>
-	<debug>true</debug>
+	<debug>false</debug>
 
 	<javahome>${JAVA_HOME}</javahome>
 
