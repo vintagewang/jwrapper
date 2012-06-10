@@ -5,7 +5,7 @@
 
 	<jvmtype>client</jvmtype>
 
-	<mainclass>Hello</mainclass>
+	<mainclass>com.github.vintage.wang.jwrapper.sample.HelloWorld</mainclass>
 
 	<properties>
 		<java.ext.dirs>${cpd}/../lib</java.ext.dirs>
@@ -17,10 +17,7 @@
 	</properties>
 
 	<classpaths>
-		<path>cp1</path>
-		<path>cp2</path>
-		<path>${cwd}/../lib</path>
-		<jars>cp3</jars>
+		<path>${cpd}/../samples/Hello/target/Hello-1.0-SNAPSHOT.jar</path>
 	</classpaths>
 
 	<options>
