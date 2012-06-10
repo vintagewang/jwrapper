@@ -21,7 +21,6 @@
 class JavaLauncher
 {
 public:
-
 	JavaLauncher();
 	~JavaLauncher();
 	static JavaLauncher* getInstance();
@@ -31,6 +30,10 @@ public:
 	static void abortHandler(int code);
 
 private:
+	static jobject newPlatformString(JNIEnv *env, char *s);
+	static jobject getPlatformEncoding(JNIEnv *env);
+	static jboolean isEncodingSupported(JNIEnv *env, jobject enc);
+	static void reportErrorMessage(JNIEnv* env, const char* errorMsg = NULL);
 };
 
 #endif // end of _JW_JAVA_LAUNCHER_H__
