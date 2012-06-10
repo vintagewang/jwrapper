@@ -21,6 +21,15 @@
 
 #ifdef WIN32
 #include <Windows.h>
+#else
+#include <sys/types.h>
+#include <unistd.h>
+#endif
+
+#ifdef WIN32
+#define FILE_SEPARATOR "\\"
+#else
+#define FILE_SEPARATOR "/"
 #endif
 
 namespace JWUtil
@@ -42,6 +51,11 @@ namespace JWUtil
 		result += dir;
 		result += fname;
 #else
+		char proc[64] = {0};
+		sprintf(proc, "/proc/%d/exe", getpid());
+		char path[MAX_PATH + 1] = {0};
+		readlink(proc, path, sizeof(path) - 1);
+		result = path;
 #endif
 
 		return result;
@@ -51,13 +65,13 @@ namespace JWUtil
 	{
 		std::string result;
 #ifdef WIN32
-		char path_buffer[_MAX_PATH + 1] = {0};
-		_getcwd(path_buffer, sizeof(path_buffer) - 1);
-		result =  path_buffer;
+		char path[_MAX_PATH + 1] = {0};
+		_getcwd(path, sizeof(path) - 1);
+		result =  path;
 #else
-		char path_buffer[MAX_PATH + 1] = {0};
-		getcwd(path_buffer, sizeof(path_buffer) - 1);
-		result = path_buffer;
+		char path[MAX_PATH + 1] = {0};
+		getcwd(path, sizeof(path) - 1);
+		result = path;
 #endif
 
 		return result;
@@ -65,21 +79,11 @@ namespace JWUtil
 
 	std::string getCurrentExeFileDir()
 	{
-		std::string result;
-#ifdef WIN32
-		char path_buffer[_MAX_PATH + 1] = {0};
-		char drive[_MAX_DRIVE + 1] = {0};
-		char dir[_MAX_DIR + 1] = {0};
-		char fname[_MAX_FNAME + 1] = {0};
-		char ext[_MAX_EXT + 1] = {0};
-
-		GetModuleFileNameA(NULL, path_buffer, sizeof(path_buffer) - 1);
-		_splitpath(path_buffer, drive, dir, fname, ext);
-
-		result += drive;
-		result += dir;
-#else
-#endif
+		std::string result = getCurrentExeFilePath();
+		std::string::size_type pos = result.find_last_of(FILE_SEPARATOR);
+		if(pos != std::string::npos) {
+			return result.substr(0, pos);
+		}
 
 		return result;
 	}
