@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 	if(result) {
 		JavaConfig::getInstance()->printAll();
 
-		return JavaLauncher::getInstance()->launchJavaApp(argc, argv);
+		return JavaLauncher::getInstance()->launchJavaApp(argc - 1, ++argv);
 	}
 
 	return -1;
