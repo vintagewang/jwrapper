@@ -230,54 +230,54 @@ std::string JavaConfig::getJVMDllPath()
 #elif defined(SOLARIS_X86)
 #if defined(ARCH64)
 	result += this->javaHome;
-	result += "/jre/lib/amd64";
+	result += "/jre/lib/amd64/";
 	result += this->jvmType;
 	result += "/libjvm.so";
 #else
 	result += this->javaHome;
-	result += "/jre/lib/i386";
+	result += "/jre/lib/i386/";
 	result += this->jvmType;
 	result += "/libjvm.so";
 #endif
 #elif defined(SOLARIS_X86)
 #if defined(ARCH64)
 	result += this->javaHome;
-	result += "/jre/lib/sparcv9";
+	result += "/jre/lib/sparcv9/";
 	result += this->jvmType;
 	result += "/libjvm.so";
 #else
 	result += this->javaHome;
-	result += "/jre/lib/sparc";
+	result += "/jre/lib/sparc/";
 	result += this->jvmType;
 	result += "/libjvm.so";
 #endif
 #elif defined(HPUX)
 #if defined(ARCH64)
 	result += this->javaHome;
-	result += "/jre/lib/IA64W";
+	result += "/jre/lib/IA64W/";
 	result += this->jvmType;
 	result += "/libjvm.so";
 #else
 	result += this->javaHome;
-	result += "/jre/lib/IA64N";
+	result += "/jre/lib/IA64N/";
 	result += this->jvmType;
 	result += "/libjvm.so";
 #endif
 #elif defined(LINUX)
 #if defined(ARCH64)
 	result += this->javaHome;
-	result += "/jre/lib/amd64";
+	result += "/jre/lib/amd64/";
 	result += this->jvmType;
 	result += "/libjvm.so";
 #else
 	result += this->javaHome;
-	result += "/jre/lib/i386";
+	result += "/jre/lib/i386/";
 	result += this->jvmType;
 	result += "/libjvm.so";
 #endif
 #elif defined(AIX)
 	result += this->javaHome;
-	result += "/jre/bin/classic";
+	result += "/jre/bin/classic/";
 	result += this->jvmType;
 	result += "/libjvm.a";
 #endif

@@ -3,7 +3,7 @@
 
 	<javahome>${JAVA_HOME}</javahome>
 
-	<jvmtype>client</jvmtype>
+	<jvmtype>server</jvmtype>
 
 	<mainclass>com.github.vintage.wang.jwrapper.sample.NiceServer</mainclass>
 

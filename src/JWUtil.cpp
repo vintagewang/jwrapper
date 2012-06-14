@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 #include "JWUtil.h"
-#include <direct.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
 
 #ifdef WIN32
 #include <Windows.h>
+#include <direct.h>
 #else
 #include <sys/types.h>
 #include <unistd.h>
@@ -48,7 +48,7 @@ namespace JWUtil
 #else
 		char proc[64] = {0};
 		sprintf(proc, "/proc/%d/exe", getpid());
-		char path[MAX_PATH + 1] = {0};
+		char path[PATH_MAX + 1] = {0};
 		readlink(proc, path, sizeof(path) - 1);
 		result = path;
 #endif
@@ -64,7 +64,7 @@ namespace JWUtil
 		_getcwd(path, sizeof(path) - 1);
 		result =  path;
 #else
-		char path[MAX_PATH + 1] = {0};
+		char path[PATH_MAX + 1] = {0};
 		getcwd(path, sizeof(path) - 1);
 		result = path;
 #endif

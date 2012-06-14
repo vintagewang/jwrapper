@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include "DLL.h"
+#include <stdio.h>
 #include <assert.h>
 
 DLL::DLL(const char* file) : dll(NULL)
