@@ -5,7 +5,7 @@
 
 	<jvmtype>server</jvmtype>
 
-	<mainclass>com.github.vintage.wang.jwrapper.sample.NiceServer</mainclass>
+	<mainclass>com.github.vintage.wang.jwrapper.sample.HelloWorld</mainclass>
 
 	<properties>
 		<java.ext.dirs>${cpd}/../lib</java.ext.dirs>

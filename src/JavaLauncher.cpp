@@ -15,6 +15,7 @@
  */
 #include "JavaLauncher.h"
 #include "JavaConfig.h"
+#include "JWUtil.h"
 #include "DLL.h"
 
 #define NULL_CHECK0(e) if ((e) == 0) return 0
@@ -41,6 +42,8 @@ int JavaLauncher::launchJavaApp(int argc, char** argv)
 {
 	// 1, 获取JVM动态库全路径
 	std::string jvmPath = JavaConfig::getInstance()->getJVMDllPath();
+
+	JavaConfig::getInstance()->printLog("LIBPATH = [%s]", JWUtil::getLibPath().c_str());
 
 	// 2, 定义DLL对象，并加载JVM动态库
 	DLL jvmDll(jvmPath.c_str());

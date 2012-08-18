@@ -128,8 +128,6 @@ bool JavaConfig::load()
 	JWUtil::addLibPath(JWUtil::getCurrentExeFileDir().c_str());
 	JWUtil::addLibPath((this->javaHome + "/jre/bin").c_str());
 
-
-
 	return true;
 }
 
@@ -231,11 +229,13 @@ std::string JavaConfig::getJVMDllPath()
 #if defined(ARCH64)
 	result += this->javaHome;
 	result += "/jre/lib/amd64/";
+	JWUtil::addLibPath(result.c_str());
 	result += this->jvmType;
 	result += "/libjvm.so";
 #else
 	result += this->javaHome;
 	result += "/jre/lib/i386/";
+	JWUtil::addLibPath(result.c_str());
 	result += this->jvmType;
 	result += "/libjvm.so";
 #endif
@@ -243,11 +243,13 @@ std::string JavaConfig::getJVMDllPath()
 #if defined(ARCH64)
 	result += this->javaHome;
 	result += "/jre/lib/sparcv9/";
+	JWUtil::addLibPath(result.c_str());
 	result += this->jvmType;
 	result += "/libjvm.so";
 #else
 	result += this->javaHome;
 	result += "/jre/lib/sparc/";
+	JWUtil::addLibPath(result.c_str());
 	result += this->jvmType;
 	result += "/libjvm.so";
 #endif
@@ -255,11 +257,13 @@ std::string JavaConfig::getJVMDllPath()
 #if defined(ARCH64)
 	result += this->javaHome;
 	result += "/jre/lib/IA64W/";
+	JWUtil::addLibPath(result.c_str());
 	result += this->jvmType;
 	result += "/libjvm.so";
 #else
 	result += this->javaHome;
 	result += "/jre/lib/IA64N/";
+	JWUtil::addLibPath(result.c_str());
 	result += this->jvmType;
 	result += "/libjvm.so";
 #endif
@@ -267,20 +271,25 @@ std::string JavaConfig::getJVMDllPath()
 #if defined(ARCH64)
 	result += this->javaHome;
 	result += "/jre/lib/amd64/";
+	JWUtil::addLibPath(result.c_str());
 	result += this->jvmType;
 	result += "/libjvm.so";
 #else
 	result += this->javaHome;
 	result += "/jre/lib/i386/";
+	JWUtil::addLibPath(result.c_str());
 	result += this->jvmType;
 	result += "/libjvm.so";
 #endif
 #elif defined(AIX)
 	result += this->javaHome;
 	result += "/jre/bin/classic/";
+	JWUtil::addLibPath(result.c_str());
 	result += this->jvmType;
 	result += "/libjvm.a";
 #endif
+
+	JWUtil::addLibPath(JWUtil::getDirName(result.c_str()).c_str());
 
 	return result;
 }
@@ -362,4 +371,9 @@ void JavaConfig::buildNewOptionTable(OptionTable& table)
 	}
 
 	table["-Djava.class.path"] = javaClassPath;
+}
+
+bool JavaConfig::isDebug()
+{
+	return this->debug;
 }

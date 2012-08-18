@@ -55,6 +55,12 @@ namespace JWUtil
 	void addLibPath(const char* path);
 
 	std::string getLibPath();
+
+	/**
+	 * 获取DIRNAME
+	 * path 包含文件名的全路径
+	 */
+	std::string getDirName(const char* path);
 };
 
 #endif // end of _JW_JWUTIL_H__

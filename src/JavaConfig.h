@@ -49,6 +49,8 @@ public:
 
 	bool load();
 
+	bool isDebug();
+
 	void printAll();
 
 	void printLog(const char* fmt, ...);

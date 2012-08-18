@@ -74,13 +74,7 @@ namespace JWUtil
 
 	std::string getCurrentExeFileDir()
 	{
-		std::string result = getCurrentExeFilePath();
-		std::string::size_type pos = result.find_last_of(FILE_SEPARATOR);
-		if(pos != std::string::npos) {
-			return result.substr(0, pos);
-		}
-
-		return result;
+		return getDirName(getCurrentExeFilePath().c_str());
 	}
 
 	void setEnv(const char* name, const char* value)
@@ -88,10 +82,11 @@ namespace JWUtil
 		assert(NULL != name);
 		assert(NULL != value);
 
-#ifdef WIN32
 		std::string envFull = name;
 		envFull += "=";
 		envFull += value;
+
+#ifdef WIN32
 		_putenv(envFull.c_str());
 #else
 		setenv(name, value, 1);
@@ -147,5 +142,17 @@ namespace JWUtil
 		const char* envLibPath = getenv(libPath);
 
 		return (envLibPath != NULL) ? envLibPath : "";
+	}
+
+	std::string getDirName(const char* path)
+	{
+		assert(NULL != path);
+		std::string result = path;
+		std::string::size_type pos = result.find_last_of(FILE_SEPARATOR);
+		if(pos != std::string::npos) {
+			return result.substr(0, pos);
+		}
+
+		return result;
 	}
 }
