@@ -86,10 +86,15 @@ namespace JWUtil
 		envFull += "=";
 		envFull += value;
 
+		char* newEnv = (char *)malloc(envFull.length() + 1);
+		memset(newEnv, 0, envFull.length() + 1);
+		strcat(newEnv, envFull.c_str());
+
 #ifdef WIN32
-		_putenv(envFull.c_str());
+		_putenv(newEnv);
 #else
-		setenv(name, value, 1);
+		putenv(newEnv);
+		//setenv(name, value, 1);
 #endif
 	}
 

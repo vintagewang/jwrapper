@@ -90,7 +90,7 @@ bool JavaConfig::load()
 			}
 		}
 
-		// Class Path
+		// Class Path/jars
 		{
 			BOOST_AUTO(child, pt.get_child("java.classpaths"));
 			for(BOOST_AUTO(pos, child.begin());
@@ -98,7 +98,7 @@ bool JavaConfig::load()
 			    ++pos) {
 				std::string value = pos->second.data();
 				if(this->expandMacro(value)) {
-					this->classPathList.push_back(value);
+					this->classPathList.push_back(value); 
 				} else {
 					return false;
 				}
@@ -147,7 +147,7 @@ void JavaConfig::printAll()
 		{
 			printf("classpaths:\n");
 			for(size_t i = 0; i < this->classPathList.size(); i++) {
-				printf("\t %2d = [%s]\n", i, this->classPathList[i].c_str());
+				printf("\t %2d = [%s]\n", (int)i, this->classPathList[i].c_str());
 			}
 		}
 		{

@@ -81,12 +81,12 @@ int JavaLauncher::launchJavaApp(int argc, char** argv)
 	JavaConfig::getInstance()->printLog("Find Main class OK.");
 
 	// 6, 创建包含Main方法的类
-	jobject mainObject = jniEnv->AllocObject(mainClass);
-	if(0 == mainClass) {
-		reportErrorMessage(jniEnv, "Create main class Failed.");
-		javaVM->DestroyJavaVM();
-		return -1;
-	}
+	//jobject mainObject = jniEnv->AllocObject(mainClass);
+	//if(0 == mainClass) {
+	//	reportErrorMessage(jniEnv, "Create main class Failed.");
+	//	javaVM->DestroyJavaVM();
+	//	return -1;
+	//}
 
 	JavaConfig::getInstance()->printLog("Create Main class OK.");
 
