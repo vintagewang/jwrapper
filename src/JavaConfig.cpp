@@ -360,7 +360,7 @@ void JavaConfig::buildNewOptionTable(OptionTable& table)
 
 	OptionTable::iterator it = this->propertyTable.begin();
 	for(; it != this->propertyTable.end(); it++) {
-		this->optionTable["-D" + it->first] = it->second;
+		table["-D" + it->first] = it->second;
 	}
 
 	// -Djava.class.path
